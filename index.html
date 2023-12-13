@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap">
+    <style>
+        body {
+            font-family: 'Comfortaa', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('back.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+        }
+
+        #question-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .answer-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            position: absolute;
+            border-radius: 20px;
+        }
+
+        #no-button {
+            background-color: #ff0000;
+        }
+
+        #yes-button {
+            background-color: #00ff00;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #result-screen {
+            text-align: center;
+            display: none;
+        }
+
+        #result-screen.visible {
+            display: block;
+        }
+
+        #result-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #know-it-gif {
+            max-width: 100%;
+            height: auto;
+            width: 100%;
+            max-height: 100vh;
+            /* Limit height to the viewport height */
+        }
+
+        #question {
+            font-size: 36px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="question-container">
+        <h2 id="question">ARE YOU GAY?</h2>
+        <button id="no-button" class="answer-button" onclick="changePosition()">No, I'm gay</button>
+        <button id="yes-button" class="answer-button" onclick="changeQuestion()">Yes, I'm gay</button>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <img id="know-it-gif" src="whyareyougay.jpg" alt="Why Are you Gay?">
+    </div>
+
+    <script>
+        const questionElement = document.getElementById("question");
+        const noButton = document.getElementById("no-button");
+        const yesButton = document.getElementById("yes-button");
+        const resultScreen = document.getElementById("result-screen");
+        let clickCount = 0;
+
+        document.addEventListener("mousemove", function (event) {
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            const buttonRect = noButton.getBoundingClientRect();
+            const buttonX = buttonRect.left + buttonRect.width / 2;
+            const buttonY = buttonRect.top + buttonRect.height / 2;
+
+            const distance = Math.sqrt(Math.pow(mouseX - buttonX, 2) + Math.pow(mouseY - buttonY, 2));
+
+            if (distance < 150) {
+                changePosition();
+            }
+        });
+
+        function changePosition() {
+            const buttonRect = noButton.getBoundingClientRect();
+            const maxX = window.innerWidth - buttonRect.width;
+            const maxY = window.innerHeight - buttonRect.height;
+
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            noButton.style.left = `${randomX}px`;
+            noButton.style.top = `${randomY}px`;
+        }
+
+        function changeQuestion() {
+            if (clickCount === 1) {
+                questionElement.innerHTML = "ARE YOU SURE?";
+
+                // Slow-motion transition
+                setTimeout(function () {
+                    questionElement.style.display = "none";
+                    noButton.style.display = "none";
+                    yesButton.style.display = "none";
+                    resultScreen.classList.add("visible");
+                }, 5000); // Adjust the delay (in milliseconds) as needed
+            } else {
+                clickCount++;
+            }
+        }
+    </script>
+
+</body>
+
+</html>
